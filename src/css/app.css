@@ -1,0 +1,14 @@
+/* app global css */
+body {
+  background-image: url("src/assets/parking_garage_landing_page.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
+.my-card {
+  min-width: 350px;
+  gap: 20px;
+  padding: 10px;
+}
