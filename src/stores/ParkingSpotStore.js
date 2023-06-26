@@ -46,10 +46,9 @@ export const useParkingSpotStore = defineStore("parkingSpotStore", () => {
 
   const deleteSpot = (spotId) => {
     //parkingSpotList.value.splice(spotId,1)
-    return axios.delete(`http://127.0.0.1:8000/api/delete-spot/${spotId}`).then(
-
-      console.log("delete ok")
-    )
+    return axios
+      .delete(`http://127.0.0.1:8000/api/delete-spot/${spotId}`)
+      .then(console.log("delete ok"));
   };
 
   return {
