@@ -26,6 +26,21 @@ export const useParkingSpotStore = defineStore("parkingSpotStore", () => {
         console.log(error);
       });
   };
+  const getUserParkingSpots = async (userId) => {
+    await axios
+      .get(`http://127.0.0.1:8000/api/parking-spots/${userId}`)
+      .then((response) => {
+        console.log(userStore.user.id);
+        console.log(response.data);
+        parkingSpotList.value = response.data;
+        //console.log(response);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  };
+
   const getUniqueCities = () => {
     axios
       .get("http://127.0.0.1:8000/api/cities")
@@ -56,6 +71,7 @@ export const useParkingSpotStore = defineStore("parkingSpotStore", () => {
     parkingSpotList,
     getUniqueCities,
     getAllParkingSpots,
+    getUserParkingSpots,
     createNewSpot,
     deleteSpot,
   };

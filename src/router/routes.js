@@ -3,37 +3,47 @@ import RegisterPage from "pages/RegisterPage";
 import LandingPage from "pages/LandingPage";
 import ParkingSpotList from "pages/ParkingSpotList";
 import CreateNewSpot from "pages/CreateNewSpot";
+import UserProfile from "pages/UserProfile";
 
 const routes = [
   {
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "home", component: () => import("pages/IndexPage.vue"), meta: { requiresAuth: true }},
+      {
+        path: "home",
+        component: () => import("pages/IndexPage.vue"),
+        meta: { requiresAuth: true },
+      },
       {
         path: "login",
         component: LoginPage,
-        meta: { requiresAuth: false }
+        meta: { requiresAuth: false },
       },
       {
         path: "register",
         component: RegisterPage,
-        meta: { requiresAuth: false }
+        meta: { requiresAuth: false },
       },
       {
         path: "",
         component: LandingPage,
-        meta: { requiresAuth: false }
+        meta: { requiresAuth: false },
       },
       {
         path: "about",
         component: ParkingSpotList,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true },
       },
       {
         path: "create-spot",
         component: CreateNewSpot,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "profile",
+        component: UserProfile,
+        meta: { requiresAuth: true },
       },
     ],
   },

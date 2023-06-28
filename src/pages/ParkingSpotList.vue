@@ -30,6 +30,7 @@
         class="flex fit row wrap justify-center items-start content-center q-pa-md"
       >
         <q-select
+          class="q-mx-sm"
           bg-color="white"
           outlined
           v-model="selectedCity"
@@ -48,6 +49,7 @@
           </template>
         </q-select>
         <q-select
+          class="q-mx-sm"
           bg-color="white"
           outlined
           v-model="selectedCarType"
@@ -60,7 +62,12 @@
         >
         </q-select>
 
-        <q-input bg-color="white" outlined :model-value="stringDate">
+        <q-input
+          bg-color="white"
+          outlined
+          :model-value="stringDate"
+          class="q-mx-sm"
+        >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy
@@ -83,13 +90,6 @@
             </q-icon>
           </template>
         </q-input>
-        <q-btn
-          push
-          color="primary"
-          round
-          icon="search"
-          @click.prevent="search"
-        />
       </div>
     </q-page-sticky>
   </q-page>
@@ -164,14 +164,6 @@ const filteredSpots = computed(() => {
   });
 });
 
-// const filterSpots = () => {
-//   console.log("should filter spots")
-//   filteredSpots.value = parkingSpotList.value.filter((parkingSpot) => {
-
-//     return (parkingSpot.city === selectedCity.value || selectedCity.value === null)
-//       && (selectedCarType.value === parkingSpot.vehicle_type || selectedCarType.value === null)
-//   })
-// }
 //otan h polh tou parkingSpot einai idia me ti selectedCity || otan h selectedCity einai null
 //otan to selectedCarType einai iso me to parkingSpot.vehicle_type || otan to selectedCarType einai null
 const deleteSpot = (id) => {
