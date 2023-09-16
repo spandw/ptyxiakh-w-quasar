@@ -39,7 +39,7 @@ export default route(function (/* { store, ssrContext } */) {
   router.beforeEach((to, from, next) => {
     const isLoggedIn = localStorage.getItem("token");
     if (to.matched.some((record) => record.meta.requiresAuth) && !isLoggedIn) {
-      next("/");
+      next({ path: "/landing" }).catch(() => {});
     }
     next();
   });

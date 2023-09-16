@@ -1,38 +1,48 @@
 <template padding>
   <div class="container">
     <q-card class="my-card" flat bordered>
-      <!-- <q-img :src="require(`/src/assets/${imageUrl}`)" /> -->
-      <q-img
-        src="https://img.freepik.com/free-photo/underground-car-parking-shopping-center_93675-134540.jpg?size=626&ext=jpg" />
+      <q-img :src="imageLink" height="300px" />
       <q-card-section>
         <div class="row no-wrap items-center">
-          <div class="col text-h6 ellipsis">
-            {{ title }}
-          </div>
+          <div class="col text-h6 ellipsis">{{ spot.title }}</div>
         </div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
         <div class="text-paragragh text-grey">
-          {{ description }}
+          {{ spot.description }}
         </div>
         <q-space />
         <div class="text-caption text-grey">
-          {{ city }},{{ address }}
-        </div>
-        <div class="text-h6">
-          {{ price }}€
+          {{ spot.city }},{{ spot.address }}
         </div>
       </q-card-section>
       <q-separator />
       <q-card-actions class="row">
-        <q-btn filler class="col" color="primary">
+        <q-btn
+          filler
+          class="col"
+          color="primary"
+          :to="`/parking-spot/${spot.id}`"
+        >
           Book now
         </q-btn>
-        <q-btn filler v-if="checkOwnership" class="col" color="positive">
+        <q-btn
+          filler
+          v-if="checkOwnership"
+          class="col"
+          color="positive"
+          :to="`/update-spot/${spot.id}`"
+        >
           Update
         </q-btn>
-        <q-btn filler v-if="checkOwnership" class="col" color="negative" @click="deleteSpot(id)">
+        <q-btn
+          filler
+          v-if="checkOwnership"
+          class="col"
+          color="negative"
+          @click="deleteSpot(spot.id)"
+        >
           Delete
         </q-btn>
       </q-card-actions>
@@ -41,70 +51,55 @@
 </template>
 
 <script setup>
-import { useQuasar } from 'quasar';
-import { useParkingSpotStore } from 'src/stores/ParkingSpotStore';
-import { useUserStore } from 'src/stores/UserStore';
-import { computed } from 'vue';
+import { useQuasar } from "quasar";
+import { useParkingSpotStore } from "src/stores/ParkingSpotStore";
+import { useUserStore } from "src/stores/UserStore";
+import { computed } from "vue";
 
-const userStore = useUserStore()
-const parkingSpotStore = useParkingSpotStore()
+const userStore = useUserStore();
+const parkingSpotStore = useParkingSpotStore();
+const $q = useQuasar();
 
+const checkOwnership = computed(() => userStore.user.id === props.spot.user_id);
 
-
-
-const checkOwnership = computed(() => userStore.user.id == props.userId);
+const imageLink = computed(
+  () => `http://127.0.0.1:8000/storage/parking-spots/${props.spot.id}.png`
+);
 
 const props = defineProps({
-  imageUrl: {
-    type: String,
-    required: false,
-  },
-  imageAlt: {
-    type: String,
-    required: false,
-  },
-  title: {
-    type: String,
+  spot: {
+    type: Object,
     required: true,
   },
-  description: {
-    type: String,
-    required: true,
-  },
-  city: {
-    type: String,
-    required: true,
-  },
-  address: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  id: {
-    type: Number,
-    required: true,
-  },
-  userId: {
-    type: Number,
-    required: true,
-  },
-  deleteSpot: {
-    type: Function,
-    required: true
-  }
+});
+const deleteSpot = (id) => {
+  $q.dialog({
+    title: "Delete Parking Spot",
+    message: "Are you sure you want to delete this parking spot?",
+    cancel: true,
+    persistent: true,
+  })
+    .onOk(() => {
+      console.log(id);
 
-})
-
-
-
-
+      parkingSpotStore
+        .deleteSpot(id)
+        .then(parkingSpotStore.getUserParkingSpots(userStore.user.id));
+    })
+    .onOk(() => {
+      console.log(">>>> second OK catcher");
+    })
+    .onCancel(() => {
+      // console.log('>>>> Cancel')
+    })
+    .onDismiss(() => {
+      // console.log('I am triggered on both OK and Cancel')
+    });
+};
 </script>
 
 <style lang="sass" scoped>
 .container
   max-width: 400px
   margin: 15px
-  </style>
+</style>

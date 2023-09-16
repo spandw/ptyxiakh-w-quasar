@@ -11,6 +11,9 @@ export const useUserStore = defineStore("user", () => {
   const register = async (credentials) => {
     return axios.post("http://127.0.0.1:8000/api/register", credentials);
   };
+  const update = async (credentials) => {
+    return axios.put("http://127.0.0.1:8000/api/edit-user", credentials);
+  };
   const login = async (credentials) => {
     return axios
       .post("http://127.0.0.1:8000/api/login", credentials)
@@ -30,7 +33,7 @@ export const useUserStore = defineStore("user", () => {
       user.value = null;
       localStorage.removeItem("token");
       axios.defaults.headers.common["Authorization"] = null;
-      router.push({ path: "/" });
+      router.push({ path: "/landing" });
     });
   };
 
@@ -52,6 +55,5 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
-
-  return { user, loggedIn, register, logout, login, loadUser };
+  return { user, loggedIn, register, update, logout, login, loadUser };
 });

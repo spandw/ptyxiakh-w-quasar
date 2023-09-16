@@ -9,14 +9,7 @@
       <ParkingSpotCard
         v-for="(parking, index) in filteredSpots"
         :key="index"
-        :title="parking.title"
-        :description="parking.description"
-        :address="parking.address"
-        :city="parking.city"
-        :price="parking.price"
-        :id="parking.id"
-        :userId="parking.user_id"
-        :deleteSpot="deleteSpot"
+        :spot="parking"
       />
 
       <!-- </div> -->
@@ -41,6 +34,7 @@
           :options="filteredCities"
           @filter="filterFn"
           clearable
+          placeholder="City"
         >
           <template v-slot:no-option>
             <q-item>
@@ -59,6 +53,7 @@
           input-debounce="0"
           :options="carTypes"
           clearable
+          placeholder="Vehicle Type"
         >
         </q-select>
 
@@ -67,6 +62,7 @@
           outlined
           :model-value="stringDate"
           class="q-mx-sm"
+          placeholder="Date"
         >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
@@ -80,11 +76,18 @@
                   range
                   minimal
                   @update:model-value="validateDate"
-                  mask="DD/MM/YYYY"
+                  mask="YYYY-MM-DD"
                 >
-                  <div class="row items-center justify-end">
-                    <q-btn v-close-popup label="Close" color="primary" flat />
-                  </div>
+                  <q-btn-group spread>
+                    <q-btn
+                      v-close-popup
+                      label="Search"
+                      color="secondary"
+                      @click="searchWithDates"
+                    />
+                    <q-btn label="Clear" color="negative" @click="clearDate" />
+                    <q-btn v-close-popup label="Close" color="primary" />
+                  </q-btn-group>
                 </q-date>
               </q-popup-proxy>
             </q-icon>
@@ -93,10 +96,6 @@
       </div>
     </q-page-sticky>
   </q-page>
-  <div style="color: antiquewhite">
-    <!-- {{ filteredSpots.map(el => el.id) }}<br> -->
-    {{ parkingSpotList.map((el) => el.id) }}
-  </div>
 </template>
 
 <script setup>
@@ -104,26 +103,26 @@ import { storeToRefs } from "pinia";
 import { useQuasar } from "quasar";
 import ParkingSpotCard from "src/components/ParkingSpotCard.vue";
 import { useParkingSpotStore } from "src/stores/ParkingSpotStore";
+import { useUserStore } from "src/stores/UserStore";
 import { computed, ref } from "vue";
 
 const parkingSpotStore = useParkingSpotStore();
+const userStore = useUserStore();
 
 const { cities, parkingSpotList } = storeToRefs(parkingSpotStore);
 
 await parkingSpotStore.getAllParkingSpots();
 parkingSpotStore.getUniqueCities();
-
+//const today = new Date();
 const selectedCity = ref(null);
 const selectedCarType = ref(null);
 const filteredCities = ref(null);
-// const filteredSpots = ref(parkingSpotList.value)
 
 const stringDate = ref("");
 const date = ref({
-  from: "01/01/2023",
-  to: "02/01/2023",
+  from: "",
+  to: "",
 });
-const $q = useQuasar();
 
 const carTypes = ["motorbike", "car", "suv", "truck"];
 
@@ -144,6 +143,15 @@ const validateDate = () => {
   }
 };
 
+const searchWithDates = () => {
+  parkingSpotStore.filterParkingSpotByDate(date);
+};
+
+const clearDate = () => {
+  stringDate.value = "";
+  date.value = { from: "", to: "" };
+};
+
 const filterFn = (val, update) => {
   update(() => {
     const needle = val.toLowerCase();
@@ -159,38 +167,12 @@ const filteredSpots = computed(() => {
       (parkingSpot.city === selectedCity.value ||
         selectedCity.value === null) &&
       (selectedCarType.value === parkingSpot.vehicle_type ||
-        selectedCarType.value === null)
+        selectedCarType.value === null) &&
+      parkingSpot.user_id != userStore.user.id
     );
   });
 });
 
 //otan h polh tou parkingSpot einai idia me ti selectedCity || otan h selectedCity einai null
 //otan to selectedCarType einai iso me to parkingSpot.vehicle_type || otan to selectedCarType einai null
-const deleteSpot = (id) => {
-  $q.dialog({
-    title: "Delete Parking Spot",
-    message: "Are you sure you want to delete this parking spot?",
-    cancel: true,
-    persistent: true,
-  })
-    .onOk(() => {
-      console.log(id);
-      parkingSpotStore
-        .deleteSpot(id)
-        .then(parkingSpotStore.getAllParkingSpots());
-    })
-    .onOk(() => {
-      console.log(">>>> second OK catcher");
-    })
-    .onCancel(() => {
-      // console.log('>>>> Cancel')
-    })
-    .onDismiss(() => {
-      // console.log('I am triggered on both OK and Cancel')
-    });
-};
-
-const search = () => {
-  console.log(selectedCity.value, selectedCarType.value);
-};
 </script>

@@ -3,15 +3,20 @@
     <q-header elevated v-if="userStore.loggedIn">
       <q-toolbar>
         <q-btn-group push>
-          <q-btn push label="Home" icon="home" to="/home" />
-          <q-btn push label="Search For Spot" icon="visibility" to="/about" />
+          <q-btn push label="Home" icon="home" to="/" />
+          <q-btn
+            push
+            label="Search For Spot"
+            icon="visibility"
+            to="/parking-spots"
+          />
         </q-btn-group>
         <q-space />
         <q-btn
           color="accent"
           icon="add"
           label="Add New Spot"
-          to="create-spot"
+          to="/create-spot"
         />
         <q-btn-dropdown color="accent" :label="userStore.user.username">
           <div class="row no-wrap q-pa-sm">
@@ -33,11 +38,11 @@
                   <q-item-section
                     ><q-btn
                       color="positive"
-                      label="My Spots"
+                      label="Profile"
                       push
                       size="m"
                       v-close-popup
-                      to="my-spots"
+                      to="/profile"
                     />
                   </q-item-section>
                 </q-item>
@@ -67,7 +72,9 @@
         <router-view />
 
         <!-- loading state via #fallback slot -->
-        <template #fallback> Loading... </template>
+        <template #fallback>
+          <div>Loading...</div>
+        </template>
       </Suspense>
     </q-page-container>
   </q-layout>
