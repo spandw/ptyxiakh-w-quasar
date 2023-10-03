@@ -26,13 +26,10 @@
               </q-avatar>
               <q-list dense padding>
                 <q-item>
-                  <q-item-section>
-                    <q-icon
-                      name="payments"
-                      label="LALAl"
-                      style="font-size: 1.2rem"
-                    />
-                  </q-item-section>
+                  <div class="row items-center justify-between">
+                    <i class="fa-solid fa-coins fa-lg"></i>
+                    <div class="text-h6">Credits: {{ user.credits }}</div>
+                  </div>
                 </q-item>
                 <q-item>
                   <q-item-section
@@ -81,11 +78,13 @@
 </template>
 
 <script setup>
+import { storeToRefs } from "pinia";
 import { useParkingSpotStore } from "src/stores/ParkingSpotStore";
 import { useUserStore } from "src/stores/UserStore";
 
 const userStore = useUserStore();
 const parkingSpotStore = useParkingSpotStore();
+const { user } = storeToRefs(userStore);
 
 userStore.loadUser();
 </script>

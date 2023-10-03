@@ -53,7 +53,6 @@
       </q-card-actions>
     </q-card>
   </q-page>
-  {{ reservationDates }}
 </template>
 
 <script setup>
