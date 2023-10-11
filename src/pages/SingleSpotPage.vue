@@ -49,7 +49,7 @@
             </q-icon>
           </template>
         </q-input>
-        <q-btn flat color="primary"> Reserve </q-btn>
+        <q-btn flat color="primary" @click="reserveSpot"> Reserve </q-btn>
       </q-card-actions>
     </q-card>
   </q-page>
@@ -57,6 +57,7 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
+import { useQuasar } from "quasar";
 import ParkingSpotCard from "src/components/ParkingSpotCard.vue";
 import { useParkingSpotStore } from "src/stores/ParkingSpotStore";
 import { computed, ref } from "vue";
@@ -70,6 +71,9 @@ const date = ref({
   from: "",
   to: "",
 });
+
+const $q = useQuasar();
+
 console.log("params:", route.params.id);
 
 const imageLink = computed(
@@ -102,5 +106,28 @@ const validateDate = () => {
 
 const filteredDateOptions = (date) => {
   return !spotReservations.value?.includes(date);
+};
+
+const reserveSpot = () => {
+  // $q.dialog({
+  //   title: "Reserve Parking Spot",
+  //   message: "Are you sure you want to reseerve this parking spot?",
+  //   cancel: true,
+  //   persistent: true,
+  // })
+  //   .onOk(() => {
+
+  //   })
+  //   .onCancel(() => {
+  //     // console.log('>>>> Cancel')
+  //   })
+  //   .onDismiss(() => {
+  //     // console.log('I am triggered on both OK and Cancel')
+  //   });
+  parkingSpotStore.reserveParkingSpot({
+    parking_spot_id: id.value,
+    start_date: date.value.from,
+    end_date: date.value.to,
+  });
 };
 </script>

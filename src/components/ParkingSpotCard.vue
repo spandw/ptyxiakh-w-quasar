@@ -86,9 +86,6 @@ const deleteSpot = (id) => {
         .deleteSpot(id)
         .then(parkingSpotStore.getUserParkingSpots(userStore.user.id));
     })
-    .onOk(() => {
-      console.log(">>>> second OK catcher");
-    })
     .onCancel(() => {
       // console.log('>>>> Cancel')
     })

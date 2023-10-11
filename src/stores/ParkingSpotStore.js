@@ -71,16 +71,13 @@ export const useParkingSpotStore = defineStore("parkingSpotStore", () => {
       });
   };
 
-  const createNewSpot = async (credentials) => {
-    return axios.post("http://127.0.0.1:8000/api/create-spot", credentials);
+  const createNewSpot = async (data) => {
+    return axios.post("http://127.0.0.1:8000/api/create-spot", data);
   };
 
-  const updateParkingSpot = async (credentials) => {
-    console.log("credentials: ", credentials);
-    return axios.post(
-      `http://127.0.0.1:8000/api/update-spot/${credentials.id}`,
-      credentials
-    );
+  const updateParkingSpot = async (data) => {
+    console.log("data: ", data);
+    return axios.post(`http://127.0.0.1:8000/api/update-spot/${data.id}`, data);
   };
 
   const deleteSpot = (spotId) => {
@@ -125,6 +122,10 @@ export const useParkingSpotStore = defineStore("parkingSpotStore", () => {
       });
   };
 
+  const reserveParkingSpot = (data) => {
+    return axios.post("http://127.0.0.1:8000/api/create-reservation", data);
+  };
+
   return {
     cities,
     parkingSpotList,
@@ -139,5 +140,6 @@ export const useParkingSpotStore = defineStore("parkingSpotStore", () => {
     deleteSpot,
     getParkingSpotReservations,
     filterParkingSpotByDate,
+    reserveParkingSpot,
   };
 });
