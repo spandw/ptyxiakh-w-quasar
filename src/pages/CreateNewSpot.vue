@@ -100,7 +100,6 @@ const confirm = () => {
   })
     .onOk(() => {
       createNewSpot();
-      router.push({ path: "/" });
       // console.log('>>>> OK')
     })
     .onOk(() => {

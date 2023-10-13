@@ -12,54 +12,63 @@
           />
         </q-btn-group>
         <q-space />
-        <q-btn
-          color="accent"
-          icon="add"
-          label="Add New Spot"
-          to="/create-spot"
-        />
-        <q-btn-dropdown color="accent" :label="userStore.user.username">
-          <div class="row no-wrap q-pa-sm">
-            <div class="column items-center">
-              <q-avatar size="72px">
-                <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-              </q-avatar>
-              <q-list dense padding>
-                <q-item>
-                  <div class="row items-center justify-between">
-                    <i class="fa-solid fa-coins fa-lg"></i>
-                    <div class="text-h6">Credits: {{ user.credits }}</div>
-                  </div>
-                </q-item>
-                <q-item>
-                  <q-item-section
-                    ><q-btn
-                      color="positive"
-                      label="Profile"
-                      push
-                      size="m"
-                      v-close-popup
-                      to="/profile"
-                    />
-                  </q-item-section>
-                </q-item>
+        <q-btn-group push>
+          <q-btn
+            color="accent"
+            icon="add"
+            label="Add New Spot"
+            to="/create-spot"
+          />
+          <q-btn
+            color="accent"
+            icon="lists"
+            label="Manage Reservations"
+            to=""
+          />
 
-                <q-item>
-                  <q-item-section>
-                    <q-btn
-                      color="primary"
-                      label="Logout"
-                      push
-                      size="m"
-                      v-close-popup
-                      @click="userStore.logout()"
-                    />
-                  </q-item-section>
-                </q-item>
-              </q-list>
+          <q-btn-dropdown color="accent" :label="userStore.user.username">
+            <div class="row no-wrap q-pa-sm">
+              <div class="column items-center">
+                <q-avatar size="72px">
+                  <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+                </q-avatar>
+                <q-list dense padding>
+                  <q-item>
+                    <div class="row items-center justify-between">
+                      <i class="fa-solid fa-coins fa-lg"></i>
+                      <div class="text-h6">Credits: {{ user.credits }}</div>
+                    </div>
+                  </q-item>
+                  <q-item>
+                    <q-item-section
+                      ><q-btn
+                        color="positive"
+                        label="Profile"
+                        push
+                        size="m"
+                        v-close-popup
+                        to="/profile"
+                      />
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item>
+                    <q-item-section>
+                      <q-btn
+                        color="primary"
+                        label="Logout"
+                        push
+                        size="m"
+                        v-close-popup
+                        @click="userStore.logout()"
+                      />
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </div>
             </div>
-          </div>
-        </q-btn-dropdown>
+          </q-btn-dropdown>
+        </q-btn-group>
       </q-toolbar>
     </q-header>
 

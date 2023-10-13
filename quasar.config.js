@@ -101,6 +101,9 @@ module.exports = configure(function (ctx) {
           black: "000",
           white: "fff",
         },
+        notify: {
+          /* look at QuasarConfOptions from the API card */
+        },
       },
 
       //iconSet: 'material-icons', // Quasar icon set
@@ -114,7 +117,7 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: ["Dialog"],
+      plugins: ["Dialog", "Notify"],
     },
 
     // animations: 'all', // --- includes all animations

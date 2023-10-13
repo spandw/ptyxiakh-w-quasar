@@ -4,15 +4,18 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 import { useUserStore } from "./UserStore";
 import { route } from "quasar/wrappers";
+import { useQuasar } from "quasar";
 
 export const useParkingSpotStore = defineStore("parkingSpotStore", () => {
   const router = useRouter();
   const userStore = useUserStore();
+  const $q = useQuasar();
 
   const parkingSpot = ref(null);
   const parkingSpotList = ref(null);
   const cities = ref([]);
   const spotReservations = ref([]);
+  const userReservations = ref([]);
 
   const getAllParkingSpots = async () => {
     await axios
@@ -34,6 +37,18 @@ export const useParkingSpotStore = defineStore("parkingSpotStore", () => {
         console.log(userStore.user.id);
         console.log(response.data);
         parkingSpotList.value = response.data;
+        //console.log(response);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  };
+  const getUserReservations = async () => {
+    await axios
+      .get("http://127.0.0.1:8000/api/user-reservations")
+      .then((response) => {
+        userReservations.value = response.data;
         //console.log(response);
       })
       .catch(function (error) {
@@ -72,7 +87,23 @@ export const useParkingSpotStore = defineStore("parkingSpotStore", () => {
   };
 
   const createNewSpot = async (data) => {
-    return axios.post("http://127.0.0.1:8000/api/create-spot", data);
+    return axios
+      .post("http://127.0.0.1:8000/api/create-spot", data)
+      .then((response) => {
+        $q.notify({
+          color: "positive",
+          message: response.data.message,
+          icon: "report_problem",
+        });
+        router.push({ path: "/" });
+      })
+      .catch((error) => {
+        $q.notify({
+          color: "negative",
+          message: error.response.data.message,
+          icon: "report_problem",
+        });
+      });
   };
 
   const updateParkingSpot = async (data) => {
@@ -82,9 +113,13 @@ export const useParkingSpotStore = defineStore("parkingSpotStore", () => {
 
   const deleteSpot = (spotId) => {
     //parkingSpotList.value.splice(spotId,1)
-    return axios
-      .delete(`http://127.0.0.1:8000/api/delete-spot/${spotId}`)
-      .then(console.log("delete ok"));
+    return axios.delete(`http://127.0.0.1:8000/api/delete-spot/${spotId}`).then(
+      $q.notify({
+        color: "positive",
+        message: response.data.message,
+        icon: "report_problem",
+      })
+    );
   };
 
   const getParkingSpotReservations = async (spotId) => {
@@ -141,5 +176,6 @@ export const useParkingSpotStore = defineStore("parkingSpotStore", () => {
     getParkingSpotReservations,
     filterParkingSpotByDate,
     reserveParkingSpot,
+    getUserReservations,
   };
 });
