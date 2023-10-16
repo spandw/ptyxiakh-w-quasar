@@ -7,6 +7,7 @@ import UpdateExistingSpot from "pages/UpdateExistingSpot";
 import UserProfile from "pages/UserProfile";
 import EditUser from "pages/EditUser";
 import SingleSpotPage from "pages/SingleSpotPage";
+import UserReservationList from "pages/UserReservationList";
 
 const routes = [
   {
@@ -36,6 +37,12 @@ const routes = [
       {
         path: "parking-spots",
         component: ParkingSpotList,
+        meta: { requiresAuth: true },
+        children: [],
+      },
+      {
+        path: "user-reservations",
+        component: UserReservationList,
         meta: { requiresAuth: true },
         children: [],
       },

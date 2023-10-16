@@ -23,7 +23,7 @@
             color="accent"
             icon="lists"
             label="Manage Reservations"
-            to=""
+            to="/user-reservations"
           />
 
           <q-btn-dropdown color="accent" :label="userStore.user.username">
