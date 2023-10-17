@@ -49,7 +49,7 @@ export const useParkingSpotStore = defineStore("parkingSpotStore", () => {
       .get("http://127.0.0.1:8000/api/user-reservations")
       .then((response) => {
         userReservations.value = response.data;
-        //console.log(response);
+        console.log(userReservations.value);
       })
       .catch(function (error) {
         // handle error

@@ -22,6 +22,13 @@
 </template>
 
 <script setup>
+import { storeToRefs } from "pinia";
+import { useParkingSpotStore } from "src/stores/ParkingSpotStore";
+
+const parkingSpotStore = useParkingSpotStore();
+await parkingSpotStore.getUserReservations();
+
+const { userReservations } = storeToRefs(parkingSpotStore);
 const columns = [
   {
     name: "reservation",
@@ -46,10 +53,12 @@ const columns = [
 
 const rows = [
   {
-    reservation: "Frozen Yogurt",
+    reservation: userReservations.value.id,
     parkingSpot: 159,
     from: 6.0,
     to: 24,
   },
 ];
+
+console.log(userReservations.value);
 </script>
