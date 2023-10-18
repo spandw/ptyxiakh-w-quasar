@@ -2,8 +2,9 @@
   <q-page>
     <div class="q-pa-md">
       <q-table
+        v-if="userReservations"
         title="Reservations"
-        :rows="rows"
+        :rows="userReservations"
         :columns="columns"
         row-key="reservation"
       >
@@ -12,7 +13,7 @@
             <q-btn
               color="negative"
               icon="delete"
-              @click="deleteReservation()"
+              @click="deleteReservation(props.row.id)"
             ></q-btn>
           </q-td>
         </template>
@@ -23,42 +24,58 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
+import { useQuasar } from "quasar";
 import { useParkingSpotStore } from "src/stores/ParkingSpotStore";
+import { ref } from "vue";
 
 const parkingSpotStore = useParkingSpotStore();
-await parkingSpotStore.getUserReservations();
+const $q = useQuasar();
 
 const { userReservations } = storeToRefs(parkingSpotStore);
+await parkingSpotStore.getUserReservations();
+//console.log("Apo to component: ", userReservations.value);
+
+// reservations.value = userReservations.value;
+
 const columns = [
   {
-    name: "reservation",
+    name: "id",
     required: true,
     label: "Reservation",
     align: "left",
-    field: (row) => row.reservation,
+    field: "id",
     format: (val) => `${val}`,
     sortable: true,
   },
   {
-    name: "parkingSpot",
+    name: "parking_spot_id",
     align: "center",
-    label: "Parking Spot",
-    field: "parkingSpot",
+    label: "Parking Spot ID",
+    field: "parking_spot_id",
     sortable: true,
   },
-  { name: "from", label: "Starting Date", field: "from", sortable: true },
-  { name: "to", label: "Ending Date", field: "to", sortable: true },
+  { name: "from", label: "Starting Date", field: "start_date", sortable: true },
+  { name: "to", label: "Ending Date", field: "end_date", sortable: true },
   { name: "actions", label: "Actions", field: "actions" },
 ];
 
-const rows = [
-  {
-    reservation: userReservations.value.id,
-    parkingSpot: 159,
-    from: 6.0,
-    to: 24,
-  },
-];
-
-console.log(userReservations.value);
+const deleteReservation = (id) => {
+  $q.dialog({
+    title: "Cancel reservation.",
+    message: "Are you sure you want to cancel this reservation?",
+    cancel: true,
+    persistent: true,
+  })
+    .onOk(() => {
+      parkingSpotStore.cancelReservation(id);
+      console.log("Delete:", id);
+      parkingSpotStore.getUserReservations();
+    })
+    .onCancel(() => {
+      // console.log('>>>> Cancel')
+    })
+    .onDismiss(() => {
+      // console.log('I am triggered on both OK and Cancel')
+    });
+};
 </script>

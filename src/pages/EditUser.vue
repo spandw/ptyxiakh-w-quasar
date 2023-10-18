@@ -70,20 +70,12 @@ const update = async () => {
     persistent: true,
   })
     .onOk(() => {
-      userStore
-        .update({
-          username: user.value.username,
-          name: user.value.name,
-          last_name: user.value.last_name,
-          email: user.value.email,
-        })
-        .then(() => {
-          //alert.value = true;
-          router.push({ path: "/profile" });
-        });
-      // .finally(() => {
-      //   router.push("/home");
-      // });
+      userStore.update({
+        username: user.value.username,
+        name: user.value.name,
+        last_name: user.value.last_name,
+        email: user.value.email,
+      });
     })
     .onCancel(() => {
       // console.log('>>>> Cancel')

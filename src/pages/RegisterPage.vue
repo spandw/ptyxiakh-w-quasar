@@ -56,17 +56,13 @@ const user = ref({
 });
 
 const register = async () => {
-  await userStore
-    .register({
-      username: user.value.username,
-      name: user.value.name,
-      last_name: user.value.last_name,
-      email: user.value.email,
-      password: user.value.password,
-      password_confirmation: user.value.password_confirmation,
-    })
-    .then(() => {
-      router.push({ path: "/" });
-    });
+  await userStore.register({
+    username: user.value.username,
+    name: user.value.name,
+    last_name: user.value.last_name,
+    email: user.value.email,
+    password: user.value.password,
+    password_confirmation: user.value.password_confirmation,
+  });
 };
 </script>

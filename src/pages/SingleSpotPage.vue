@@ -109,25 +109,25 @@ const filteredDateOptions = (date) => {
 };
 
 const reserveSpot = () => {
-  // $q.dialog({
-  //   title: "Reserve Parking Spot",
-  //   message: "Are you sure you want to reseerve this parking spot?",
-  //   cancel: true,
-  //   persistent: true,
-  // })
-  //   .onOk(() => {
-
-  //   })
-  //   .onCancel(() => {
-  //     // console.log('>>>> Cancel')
-  //   })
-  //   .onDismiss(() => {
-  //     // console.log('I am triggered on both OK and Cancel')
-  //   });
-  parkingSpotStore.reserveParkingSpot({
-    parking_spot_id: id.value,
-    start_date: date.value.from,
-    end_date: date.value.to,
-  });
+  $q.dialog({
+    title: "Reserve Parking Spot",
+    message: "Are you sure you want to reseerve this parking spot?",
+    cancel: true,
+    persistent: true,
+  })
+    .onOk(() => {
+      parkingSpotStore.reserveParkingSpot({
+        parking_spot_id: id.value,
+        start_date: date.value.from,
+        end_date: date.value.to,
+      });
+      parkingSpotStore.getParkingSpotReservations(id.value);
+    })
+    .onCancel(() => {
+      // console.log('>>>> Cancel')
+    })
+    .onDismiss(() => {
+      // console.log('I am triggered on both OK and Cancel')
+    });
 };
 </script>

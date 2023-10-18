@@ -49,7 +49,7 @@ export const useParkingSpotStore = defineStore("parkingSpotStore", () => {
       .get("http://127.0.0.1:8000/api/user-reservations")
       .then((response) => {
         userReservations.value = response.data;
-        console.log(userReservations.value);
+        console.log("sto store: ", userReservations.value);
       })
       .catch(function (error) {
         // handle error
@@ -108,7 +108,15 @@ export const useParkingSpotStore = defineStore("parkingSpotStore", () => {
 
   const updateParkingSpot = async (data) => {
     console.log("data: ", data);
-    return axios.post(`http://127.0.0.1:8000/api/update-spot/${data.id}`, data);
+    return axios
+      .post(`http://127.0.0.1:8000/api/update-spot/${data.id}`, data)
+      .then(
+        $q.notify({
+          color: "positive",
+          message: response.data.message,
+          icon: "report_problem",
+        })
+      );
   };
 
   const deleteSpot = (spotId) => {
@@ -157,8 +165,44 @@ export const useParkingSpotStore = defineStore("parkingSpotStore", () => {
       });
   };
 
-  const reserveParkingSpot = (data) => {
-    return axios.post("http://127.0.0.1:8000/api/create-reservation", data);
+  const reserveParkingSpot = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/create-reservation",
+        data
+      );
+      $q.notify({
+        color: "positive",
+        message: response.data.message,
+        icon: "report_problem",
+      });
+      router.push({ path: "/" });
+    } catch (error) {
+      $q.notify({
+        color: "negative",
+        message: error.response.data.message,
+        icon: "report_problem",
+      });
+    }
+  };
+
+  const cancelReservation = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://127.0.0.1:8000/api/cancel-reservation/${id}`
+      );
+      $q.notify({
+        color: "warning",
+        message: response.data.message,
+        icon: "report_problem",
+      });
+    } catch (error) {
+      $q.notify({
+        color: "negative",
+        message: error.response.data.message,
+        icon: "report_problem",
+      });
+    }
   };
 
   return {
@@ -166,6 +210,7 @@ export const useParkingSpotStore = defineStore("parkingSpotStore", () => {
     parkingSpotList,
     parkingSpot,
     spotReservations,
+    userReservations,
     getUniqueCities,
     getAllParkingSpots,
     getUserParkingSpots,
@@ -177,5 +222,6 @@ export const useParkingSpotStore = defineStore("parkingSpotStore", () => {
     filterParkingSpotByDate,
     reserveParkingSpot,
     getUserReservations,
+    cancelReservation,
   };
 });

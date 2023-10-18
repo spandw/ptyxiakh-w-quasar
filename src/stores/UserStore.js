@@ -2,18 +2,55 @@ import { defineStore } from "pinia";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import { computed, ref } from "vue";
+import { useQuasar } from "quasar";
 
 export const useUserStore = defineStore("user", () => {
   const router = useRouter();
   const user = ref(null);
+  const $q = useQuasar();
   const loggedIn = computed(() => !!user.value);
 
-  const register = async (credentials) => {
-    return axios.post("http://127.0.0.1:8000/api/register", credentials);
+  const register = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/register",
+        data
+      );
+      $q.notify({
+        color: "positive",
+        message: response.data.message,
+        icon: "report_problem",
+      });
+      router.push({ path: "/" });
+    } catch (error) {
+      $q.notify({
+        color: "negative",
+        message: error.response.data.message,
+        icon: "report_problem",
+      });
+    }
   };
-  const update = async (credentials) => {
-    return axios.put("http://127.0.0.1:8000/api/edit-user", credentials);
+  const update = async (data) => {
+    try {
+      const response = await axios.put(
+        "http://127.0.0.1:8000/api/edit-user",
+        data
+      );
+      $q.notify({
+        color: "positive",
+        message: response.data.message,
+        icon: "report_problem",
+      });
+      router.push({ path: "/profile" });
+    } catch (error) {
+      $q.notify({
+        color: "negative",
+        message: error.response.data.message,
+        icon: "report_problem",
+      });
+    }
   };
+
   const login = async (credentials) => {
     return axios
       .post("http://127.0.0.1:8000/api/login", credentials)
@@ -51,6 +88,7 @@ export const useUserStore = defineStore("user", () => {
           axios.defaults.headers.common["Authorization"] = null;
           localStorage.removeItem("token");
           console.log("failed to login user");
+          router.push({ path: "/landing" });
         });
     }
   };
