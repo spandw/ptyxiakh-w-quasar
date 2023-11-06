@@ -97,19 +97,9 @@ const confirm = () => {
     message: "Would you like to create this spot?",
     cancel: true,
     persistent: true,
-  })
-    .onOk(() => {
-      createNewSpot();
-      // console.log('>>>> OK')
-    })
-    .onOk(() => {
-      // console.log('>>>> second OK catcher')
-    })
-    .onCancel(() => {
-      console.log(">>>> Cancel");
-    })
-    .onDismiss(() => {
-      // console.log('I am triggered on both OK and Cancel')
-    });
+  }).onOk(() => {
+    createNewSpot();
+    // console.log('>>>> OK')
+  });
 };
 </script>

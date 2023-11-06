@@ -5,6 +5,9 @@
       <q-card-section>
         <div class="row no-wrap items-center">
           <div class="col text-h6 ellipsis">{{ spot.title }}</div>
+          <div class="text-subtitle2">
+            Vehicle Type: {{ spot.vehicle_type }}
+          </div>
         </div>
       </q-card-section>
 

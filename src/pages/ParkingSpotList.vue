@@ -172,7 +172,8 @@ const filteredSpots = computed(() => {
     );
   });
 });
-
-//otan h polh tou parkingSpot einai idia me ti selectedCity || otan h selectedCity einai null
-//otan to selectedCarType einai iso me to parkingSpot.vehicle_type || otan to selectedCarType einai null
 </script>
+
+//otan h polh tou parkingSpot einai idia me ti selectedCity || otan h
+selectedCity einai null //otan to selectedCarType einai iso me to
+parkingSpot.vehicle_type || otan to selectedCarType einai null

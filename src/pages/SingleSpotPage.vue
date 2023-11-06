@@ -1,7 +1,8 @@
 <template>
   <q-page padding class="flex flex-center items-center">
     <q-card class="my-card" v-if="parkingSpot" flat bordered>
-      <q-card-section horizontal>
+      <q-card-section>
+        <q-img class="rounded-borders" :src="imageLink" />
         <q-card-section class="q-pt-xs">
           <div class="text-overline">
             Space for your {{ parkingSpot.vehicle_type }}.
@@ -10,10 +11,6 @@
           <div class="text-caption text-grey">
             {{ parkingSpot.description }}
           </div>
-        </q-card-section>
-
-        <q-card-section class="col-5 flex flex-center">
-          <q-img class="rounded-borders" :src="imageLink" />
         </q-card-section>
       </q-card-section>
 
@@ -60,11 +57,13 @@ import { storeToRefs } from "pinia";
 import { useQuasar } from "quasar";
 import ParkingSpotCard from "src/components/ParkingSpotCard.vue";
 import { useParkingSpotStore } from "src/stores/ParkingSpotStore";
+import { useUserStore } from "src/stores/UserStore";
 import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
 const parkingSpotStore = useParkingSpotStore();
+const userStore = useUserStore();
 const { parkingSpot, spotReservations } = storeToRefs(parkingSpotStore);
 const stringDate = ref("");
 const date = ref({
@@ -114,20 +113,14 @@ const reserveSpot = () => {
     message: "Are you sure you want to reseerve this parking spot?",
     cancel: true,
     persistent: true,
-  })
-    .onOk(() => {
-      parkingSpotStore.reserveParkingSpot({
-        parking_spot_id: id.value,
-        start_date: date.value.from,
-        end_date: date.value.to,
-      });
-      parkingSpotStore.getParkingSpotReservations(id.value);
-    })
-    .onCancel(() => {
-      // console.log('>>>> Cancel')
-    })
-    .onDismiss(() => {
-      // console.log('I am triggered on both OK and Cancel')
+  }).onOk(() => {
+    parkingSpotStore.reserveParkingSpot({
+      parking_spot_id: id.value,
+      start_date: date.value.from,
+      end_date: date.value.to,
     });
+    parkingSpotStore.getParkingSpotReservations(id.value);
+    userStore.loadUser();
+  });
 };
 </script>
