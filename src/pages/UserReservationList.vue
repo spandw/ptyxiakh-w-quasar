@@ -11,8 +11,8 @@
         <template v-slot:body-cell-actions="props">
           <q-td :props="props">
             <q-btn
-              color="primary"
-              icon="search"
+              color="dark"
+              icon="visibility"
               :to="`/parking-spot/${props.row.parking_spot_id}`"
               ><q-tooltip> See parking spot </q-tooltip></q-btn
             >
