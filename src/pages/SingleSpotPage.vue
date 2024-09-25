@@ -1,21 +1,23 @@
 <template>
   <q-page padding class="flex flex-center items-center">
     <q-card class="my-card" v-if="parkingSpot" flat bordered>
+      <q-img :src="imageLink" />
       <q-card-section>
-        <q-img class="rounded-borders" :src="imageLink" />
         <q-card-section class="q-pt-xs">
+          <div class="text-h5 q-mt-sm q-mb-xs">{{ parkingSpot.title }}</div>
           <div class="text-overline">
             Space for your {{ parkingSpot.vehicle_type }}.
           </div>
-          <div class="text-h5 q-mt-sm q-mb-xs">{{ parkingSpot.title }}</div>
+
+          <div class="text-subtitle2">
+            {{ parkingSpot.city }} , {{ parkingSpot.address }}
+          </div>
           <div class="text-caption text-grey">
             {{ parkingSpot.description }}
           </div>
         </q-card-section>
       </q-card-section>
-
       <q-separator />
-
       <q-card-actions>
         <q-input
           bg-color="white"
@@ -70,10 +72,7 @@ const date = ref({
   from: "",
   to: "",
 });
-
 const $q = useQuasar();
-
-console.log("params:", route.params.id);
 
 const imageLink = computed(
   () =>
@@ -118,9 +117,16 @@ const reserveSpot = () => {
       parking_spot_id: id.value,
       start_date: date.value.from,
       end_date: date.value.to,
+      date: date.value,
     });
     parkingSpotStore.getParkingSpotReservations(id.value);
     userStore.loadUser();
   });
 };
 </script>
+
+<style lang="sass" scoped>
+.my-card
+  width: 100%
+  max-width: 60vh
+</style>

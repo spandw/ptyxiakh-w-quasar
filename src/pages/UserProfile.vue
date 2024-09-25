@@ -23,13 +23,13 @@
         class="flex fit row wrap justify-center items-start content-center q-pa-md"
       >
         <q-btn-group push>
-          <q-btn push color="positive" label="Add Currency" icon="payments" />
+          <!-- <q-btn push color="positive" label="Add Currency" icon="payments" /> -->
           <q-btn
             push
             color="positive"
             label="Edit User Information"
             icon="person"
-            to="edit-user"
+            to="/edit-user"
           />
         </q-btn-group>
       </div>

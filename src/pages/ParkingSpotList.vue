@@ -4,15 +4,11 @@
       class="fit row wrap justify-evenly content-start q-pa-md"
       style="margin-top: 100px"
     >
-      <!-- <div class="q-col-gutter-md col"> -->
-      <!-- :imageUrl="item.imageUrl" :imageAlt="item.imageAlt" -->
       <ParkingSpotCard
         v-for="(parking, index) in filteredSpots"
         :key="index"
         :spot="parking"
       />
-
-      <!-- </div> -->
     </div>
     <q-page-sticky
       expand

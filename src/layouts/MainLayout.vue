@@ -25,7 +25,6 @@
             label="Manage Reservations"
             to="/user-reservations"
           />
-
           <q-btn-dropdown color="accent" :label="userStore.user.username">
             <div class="row no-wrap q-pa-sm">
               <div class="column items-center">
@@ -71,12 +70,10 @@
         </q-btn-group>
       </q-toolbar>
     </q-header>
-
     <q-page-container>
       <Suspense>
         <!-- component with nested async dependencies -->
         <router-view />
-
         <!-- loading state via #fallback slot -->
         <template #fallback>
           <div>Loading...</div>

@@ -43,6 +43,7 @@
     </div>
   </q-page>
 </template>
+
 <script setup>
 import { useParkingSpotStore } from "src/stores/ParkingSpotStore";
 import { ref } from "vue";
@@ -82,7 +83,6 @@ const createNewSpot = () => {
 };
 
 const filepicked = (file) => {
-  // newSpot.value.photo = window.URL.createObjectURL(photo.value);
   var filereader = new FileReader();
   filereader.readAsDataURL(file.target.files[0]);
   filereader.onload = function (evt) {
@@ -99,7 +99,6 @@ const confirm = () => {
     persistent: true,
   }).onOk(() => {
     createNewSpot();
-    // console.log('>>>> OK')
   });
 };
 </script>

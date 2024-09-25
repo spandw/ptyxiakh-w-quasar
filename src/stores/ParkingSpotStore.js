@@ -119,15 +119,24 @@ export const useParkingSpotStore = defineStore("parkingSpotStore", () => {
       );
   };
 
-  const deleteSpot = (spotId) => {
-    //parkingSpotList.value.splice(spotId,1)
-    return axios.delete(`http://127.0.0.1:8000/api/delete-spot/${spotId}`).then(
+  const deleteSpot = async (spotId) => {
+    try {
+      const response = await axios.delete(
+        `http://127.0.0.1:8000/api/delete-spot/${spotId}`
+      );
       $q.notify({
         color: "positive",
         message: response.data.message,
         icon: "report_problem",
-      })
-    );
+      });
+      router.push({ path: "/profile" });
+    } catch (error) {
+      $q.notify({
+        color: "negative",
+        message: error.response.data.message,
+        icon: "report_problem",
+      });
+    }
   };
 
   const getParkingSpotReservations = async (spotId) => {

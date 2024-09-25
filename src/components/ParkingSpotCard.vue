@@ -24,6 +24,7 @@
       <q-card-actions class="row">
         <q-btn
           filler
+          v-if="!checkOwnership"
           class="col"
           color="primary"
           :to="`/parking-spot/${spot.id}`"
@@ -85,9 +86,8 @@ const deleteSpot = (id) => {
     .onOk(() => {
       console.log(id);
 
-      parkingSpotStore
-        .deleteSpot(id)
-        .then(parkingSpotStore.getUserParkingSpots(userStore.user.id));
+      parkingSpotStore.deleteSpot(id);
+      parkingSpotStore.getUserParkingSpots(userStore.user.id);
     })
     .onCancel(() => {
       // console.log('>>>> Cancel')
